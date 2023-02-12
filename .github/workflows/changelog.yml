@@ -20,3 +20,6 @@ jobs:
 
       - name : Print Title of PR
         run: echo The Title of your PR is ${{ github.event.pull_request.title }}
+        
+      - name : Print messgae of PR
+        run: echo The Title of your PR is ${{ github.event.commits.message }}
