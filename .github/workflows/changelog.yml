@@ -28,12 +28,9 @@ jobs:
         
       - name: Add contents
         run: echo "testing-environment" >> test.txt
-        
-      - name: add changes
-        uses: stefanzweifel/git-auto-commit-action@v4
 
       - name : Print Title of PR
         run: echo The Title of your PR is ${{ github.event.pull_request.title }} >> test.txt
         
-      - name: Setup upterm session 
-        uses: lhotari/action-upterm@v1
+      - name: add changes
+        uses: stefanzweifel/git-auto-commit-action@v4
