@@ -28,6 +28,8 @@ jobs:
         
       - name: add changes
         uses: ad-m/github-push-action@master
+        with:
+          branch: ${{ github.head_ref }}
 
       - name : Print Title of PR
         run: echo The Title of your PR is ${{ github.event.pull_request.title }}
