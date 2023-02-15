@@ -14,10 +14,10 @@ jobs:
 
     runs-on: ubuntu-latest
     
-    permissions:
+    #permissions:
       # Give the default GITHUB_TOKEN write permission to commit and push the
       # added or changed files to the repository.
-      contents: write
+      #contents: write
 
     steps:
       - name: Checkout the repository
@@ -27,7 +27,7 @@ jobs:
         run: echo "test-2" >> test.txt
         
       - name: add changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: ad-m/github-push-action@master
 
       - name : Print Title of PR
         run: echo The Title of your PR is ${{ github.event.pull_request.title }}
