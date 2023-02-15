@@ -20,6 +20,12 @@ jobs:
         
       - name: Add contents
         run: echo "test-2" >> test.txt
+        
+      - name: add changes
+        run: |
+          git add test.txt
+          git commit -m "test"
+          git push
 
       - name : Print Title of PR
         run: echo The Title of your PR is ${{ github.event.pull_request.title }}
