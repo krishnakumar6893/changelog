@@ -27,7 +27,7 @@ jobs:
         run: |
          cp /dev/null test.txt
          echo 'testing-environment\n' >> test.txt
-         echo 'PR's for this build\n${{ github.event.pull_request.title }}' >> test.txt
+         echo 'Pull requests for this build\n${{ github.event.pull_request.title }}' >> test.txt
         
       #- name: Add contents
         #run: echo "testing-environment" >> test.txt
