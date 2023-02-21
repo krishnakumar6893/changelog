@@ -28,6 +28,7 @@ jobs:
          cp /dev/null test.txt
          cat <<EOR >> changelog.txt
          Test Release binary
+         
          Pull requests created for this build
          ${{ github.event.pull_request.title }}
          EOR
