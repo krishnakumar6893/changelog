@@ -26,8 +26,11 @@ jobs:
       - name: remove contents
         run: |
          cp /dev/null test.txt
-         echo "testing-environment\n" >> test.txt
-         echo "Pull requests for this build\n${{ github.event.pull_request.title }}" >> test.txt
+         cat <<EOR >> changelog.txt
+         Test Release binary
+         Pull requests created for this build
+         ${{ github.event.pull_request.title }}
+         EOR
         
       #- name: Add contents
         #run: echo "testing-environment" >> test.txt
