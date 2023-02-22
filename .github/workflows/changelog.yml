@@ -33,16 +33,13 @@ jobs:
          ${{ github.event.pull_request.title }}
          EOR
         
-      #- name: Add contents
-        #run: echo "testing-environment" >> test.txt
+      - name: Add contents
+        run: echo "testing-environment" >> test.doc
 
       #- name : Print Title of PR
         #run: echo The Title of your PR is ${{ github.event.pull_request.title }} >> test.txt
         
-      #- name: add changes
-       #uses: stefanzweifel/git-auto-commit-action@v4
-       
-      - name: add
-        uses: ad-m/github-push-action@master
+      - name: add changes
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-         branch: ${{ github.head_ref }}
+          file_pattern: '*.txt'
