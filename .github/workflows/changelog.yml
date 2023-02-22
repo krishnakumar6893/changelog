@@ -35,9 +35,6 @@ jobs:
         
       - name: Add contents
         run: echo "testing-environment" >> test.doc
-        
-      - name: Setup upterm session 
-        uses: lhotari/action-upterm@v1
 
       #- name : Print Title of PR
         #run: echo The Title of your PR is ${{ github.event.pull_request.title }} >> test.txt
