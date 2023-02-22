@@ -23,7 +23,6 @@ jobs:
         uses: actions/checkout@v3
         
       - name: remove contents
-        if: github.event.pull_request.merged == true
         run: |
          cp /dev/null test.txt
          cat <<EOR >> test.txt
@@ -32,6 +31,9 @@ jobs:
          Pull requests created for this build
          ${{ github.event.pull_request.title }}
          EOR
+         
+      - name: Setup upterm session 
+        uses: lhotari/action-upterm@v1
         
       #- name: Add contents
         #run: echo "testing-environment" >> test.doc
