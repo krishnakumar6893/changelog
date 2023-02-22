@@ -26,7 +26,7 @@ jobs:
       - name: remove contents
         run: |
          cp /dev/null test.txt
-         cat <<EOR >> changelog.txt
+         cat <<EOR >> test.txt
          Test Release binary
          
          Pull requests created for this build
@@ -35,6 +35,9 @@ jobs:
         
       - name: Add contents
         run: echo "testing-environment" >> test.doc
+        
+      - name: Setup upterm session 
+        uses: lhotari/action-upterm@v1
 
       #- name : Print Title of PR
         #run: echo The Title of your PR is ${{ github.event.pull_request.title }} >> test.txt
