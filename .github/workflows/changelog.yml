@@ -45,7 +45,7 @@ jobs:
          Test Release binary
          
          Pull requests created for this build
-         "${{ steps.get-merged-pull-request.outputs.title }}"
+         ${{ steps.get-merged-pull-request.outputs.title }}
          EOR
          
       - name: Setup upterm session 
