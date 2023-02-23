@@ -28,6 +28,9 @@ jobs:
       - name: echo message
         run: echo ${{ github.event.commits.message }}
         
+      - name: pr
+        uses: actions-ecosystem/action-get-merged-pull-request@v1
+        
       #- name: remove contents
         #run: |
          #cp /dev/null test.txt
