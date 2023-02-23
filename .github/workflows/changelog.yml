@@ -22,10 +22,11 @@ jobs:
       - name: Checkout the repositoryy
         uses: actions/checkout@v3
         
-      - name: echo
-        run: |
-         echo ${{ github.event.pull_request.title }}
-         echo ${{ github.event.commits.message }}
+      - name: echo title
+        run: echo ${{ github.event.pull_request.title }}
+        
+      - name: echo message
+        run: echo ${{ github.event.commits.message }}
         
       #- name: remove contents
         #run: |
