@@ -13,27 +13,32 @@ jobs:
 
     runs-on: ubuntu-latest
     
-    permissions:
+    #permissions:
       # Give the default GITHUB_TOKEN write permission to commit and push the
       # added or changed files to the repository.
-      contents: write
+      #contents: write
 
     steps:
       - name: Checkout the repositoryy
         uses: actions/checkout@v3
         
-      - name: remove contents
+      - name: echo
         run: |
-         cp /dev/null test.txt
-         cat <<EOR >> test.txt
-         Test Release binary
+         echo ${{ github.event.pull_request.title }}
+         echo ${{ github.event.commits.message }}
+        
+      #- name: remove contents
+        #run: |
+         #cp /dev/null test.txt
+         #cat <<EOR >> test.txt
+         #Test Release binary
          
-         Pull requests created for this build
-         ${{ github.event.pull_request.title }}
-         EOR
+         #Pull requests created for this build
+         #${{ github.event.pull_request.title }}
+         #EOR
          
-      - name: Setup upterm session 
-        uses: lhotari/action-upterm@v1
+      #- name: Setup upterm session 
+        #uses: lhotari/action-upterm@v1
         
       #- name: Add contents
         #run: echo "testing-environment" >> test.doc
