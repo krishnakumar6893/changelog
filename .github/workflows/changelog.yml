@@ -38,6 +38,7 @@ jobs:
         run: echo "${{ steps.get-merged-pull-request.outputs.title }}"
           
       - name: remove contents
+        if: github.ref == 'refs/heads/main'
         run: |
          cp /dev/null test.txt
          cat <<EOR >> test.txt
