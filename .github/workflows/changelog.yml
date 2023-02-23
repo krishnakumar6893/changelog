@@ -37,15 +37,15 @@ jobs:
       - name: output
         run: echo "${{ steps.get-merged-pull-request.outputs.title }}"
           
-      #- name: remove contents
-        #run: |
-         #cp /dev/null test.txt
-         #cat <<EOR >> test.txt
-         #Test Release binary
+      - name: remove contents
+        run: |
+         cp /dev/null test.txt
+         cat <<EOR >> test.txt
+         Test Release binary
          
-         #Pull requests created for this build
-         #${{ github.event.pull_request.title }}
-         #EOR
+         Pull requests created for this build
+         "${{ steps.get-merged-pull-request.outputs.title }}"
+         EOR
          
       #- name: Setup upterm session 
         #uses: lhotari/action-upterm@v1
