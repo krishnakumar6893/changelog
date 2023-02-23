@@ -22,17 +22,17 @@ jobs:
       - name: Checkout the repositoryy
         uses: actions/checkout@v3
         
-      - name: echo title
-        run: echo ${{ github.event.pull_request.title }}
+      #- name: echo title
+        #run: echo ${{ github.event.pull_request.title }}
         
-      - name: echo message
-        run: echo ${{ github.event.commits.message }}
+      #- name: echo message
+        #run: echo ${{ github.event.commits.message }}
         
       - name: pr
         uses: actions-ecosystem/action-get-merged-pull-request@v1
         id: get-merged-pull-request
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: true
           
       - name: output
         run: echo ${{ steps.get-merged-pull-request.outputs.title }}
