@@ -28,10 +28,8 @@ jobs:
       - name: echo message
         run: echo ${{ github.event.commits.message }}
         
-      - name: pr
-        uses: actions-ecosystem/action-get-merged-pull-request@v1
-        with: 
-         github_token: ${{ secrets.PAT }}
+      - name: Actions Ecosystem Action Get Merged Pull Request
+        uses: actions-ecosystem/action-get-merged-pull-request@v1.0.1
         
       #- name: remove contents
         #run: |
