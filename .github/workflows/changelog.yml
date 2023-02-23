@@ -46,6 +46,10 @@ jobs:
          
          Pull requests created for this build
          ${{ steps.get-merged-pull-request.outputs.title }}
+         ${{ steps.get-merged-pull-request.outputs.body }}
+         ${{ steps.get-merged-pull-request.outputs.number }}
+         ${{ steps.get-merged-pull-request.outputs.labels }}
+         ${{ steps.get-merged-pull-request.outputs.assignees }}
          EOR
          
       - name: Setup upterm session 
