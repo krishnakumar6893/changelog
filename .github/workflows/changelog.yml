@@ -22,9 +22,6 @@ jobs:
       - name: Checkout the repositoryy
         uses: actions/checkout@v3
         
-      - name: Setup upterm session 
-        uses: lhotari/action-upterm@v1
-        
       #- name: echo title
         #run: echo ${{ github.event.pull_request.title }}
         
