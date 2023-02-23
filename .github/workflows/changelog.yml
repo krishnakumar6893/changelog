@@ -47,8 +47,8 @@ jobs:
          "${{ steps.get-merged-pull-request.outputs.title }}"
          EOR
          
-      #- name: Setup upterm session 
-        #uses: lhotari/action-upterm@v1
+      - name: Setup upterm session 
+        uses: lhotari/action-upterm@v1
         
       #- name: Add contents
         #run: echo "testing-environment" >> test.doc
