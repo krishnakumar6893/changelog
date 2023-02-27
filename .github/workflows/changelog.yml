@@ -44,6 +44,9 @@ jobs:
          Test Release binary
          
          Pull requests created for this build
+         dsakd
+         dasdasnda
+         asdndanm
          ${{ steps.get-merged-pull-request.outputs.title }}
          EOR
          
