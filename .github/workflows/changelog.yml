@@ -12,6 +12,7 @@ jobs:
   changelog:
 
     runs-on: ubuntu-latest
+    environment: prod
     
     #permissions:
       # Give the default GITHUB_TOKEN write permission to commit and push the
