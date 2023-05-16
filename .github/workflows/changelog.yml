@@ -19,44 +19,5 @@ jobs:
       - name: Checkout the repositoryy
         uses: actions/checkout@v3
         
-      #- name: echo title
-        #run: echo ${{ github.event.pull_request.title }}
-        
-      #- name: echo message
-        #run: echo ${{ github.event.commits.message }}
-        
-      - name: pr
-        uses: actions-ecosystem/action-get-merged-pull-request@v1
-        id: get-merged-pull-request
-        with:
-          github_token: ${{ github.token }}
-          
-      - name: output
-        run: echo "${{ steps.get-merged-pull-request.outputs.title }}"
-          
-      - name: remove contents
-        if: github.ref == 'refs/heads/main'
-        run: |
-         cat <<EOR > test.txt
-         Test Release binary
-         
-         Pull requests created for this build
-         dsakd
-         dasdasnda
-         asdndanm
-         ${{ steps.get-merged-pull-request.outputs.title }}
-         EOR
-         
-      - name: Setup upterm session 
-        uses: lhotari/action-upterm@v1
-        
-      #- name: Add contents
-        #run: echo "testing-environment" >> test.doc
-
-      #- name : Print Title of PR
-        #run: echo The Title of your PR is ${{ github.event.pull_request.title }} >> test.txt
-        
-      #- name: add changes
-        #uses: stefanzweifel/git-auto-commit-action@v4
-        #with:
-          #file_pattern: '*.txt'
+      - name: sleep
+        run: sleep 2000
