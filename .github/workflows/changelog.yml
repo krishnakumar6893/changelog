@@ -28,4 +28,4 @@ jobs:
         uses: actions/checkout@v3
         
       - name: sleep
-        run: sleep 2000
+        run: sleep 1000
