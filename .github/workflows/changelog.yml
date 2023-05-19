@@ -7,9 +7,9 @@ on:
    - main
   pull_request:
   
-#concurrency:
-  #group: ${{ github.workflow }}
-  #cancel-in-progress: false
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
 
 jobs:
 
@@ -26,8 +26,6 @@ jobs:
     steps:
       - name: Checkout the repositoryy
         uses: actions/checkout@v3
-      
-      - uses: ahmadnassri/action-workflow-queue@v1
         
       - name: sleep
         run: sleep 3000
