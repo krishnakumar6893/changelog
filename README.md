@@ -22,7 +22,20 @@ jh_url = https://raw.githubusercontent.com/datasets/covid-19/master/data/time-se
         - where we call the `etl` function (first try block)
         - connect to Postgres RDS (second try block)
         - Create table if table doesn't exist (third try block)
-        - Use condition `query_results == 0`
+        - Use condition if `query_results == 0`, insert data for the first time (fourth try block)
+        - If `query_results != 0`, check for new data and insert it (fifth try block)
+        - Send the inserted rows to email
+
+    * Notify for each below steps
+        - Data transformation failed
+        - Connection to Postgres failed
+        - Unable to find info about db table
+        - First data insertion into db table failed
+        - Successfully first time data insertion into db table
+        - Daily insertion of data failed
+        - Send the inserted rows to email
+        - else Your data is already up to date, good bye
+
 
 # ETL Process Flowchart
 
