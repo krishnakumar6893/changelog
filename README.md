@@ -58,24 +58,44 @@ jh_url = https://raw.githubusercontent.com/datasets/covid-19/master/data/time-se
 
 # ETL Process Flowchart
 
-```mermaid
 graph TD
-    A[Start] --> B[Extract and Transform Data]
-    B --> C{Successful?}
-    C -->|No| D[Notify Error and Exit]
-    C -->|Yes| E[Connect to Postgres DB]
-    E --> F{Connection Successful?}
-    F -->|No| G[Notify Error and Exit]
-    F -->|Yes| H[Create Table if Not Exists]
-    H --> I[Check Table Row Count]
-    I --> J{Table Empty?}
-    J -->|Yes| K[Insert All Data]
-    J -->|No| L[Check for New Data]
-    L --> M{New Data Available?}
-    M -->|Yes| N[Insert New Data]
-    M -->|No| O[Notify Up to Date]
-    K --> P[Notify Insertion Complete]
-    N --> P
-    O --> Q[Close Connection]
-    P --> Q
-    Q --> R[End]
+    A[Start] --> B[Create Postgres RDS Instance]
+    B --> C[Create ETL.py]
+    C --> D[Extract & Merge CSV Data]
+    
+    D --> E[Lambda Function]
+    
+    subgraph "Lambda Main Function"
+        E --> F[Call ETL Function]
+        F --> G[Connect to PostgreSQL RDS]
+        G --> H{Table Exists?}
+        
+        H -->|No| I[Create Table]
+        H -->|Yes| J[Check Query Results]
+        
+        I --> J
+        
+        J -->|Results = 0| K[First Time Insert]
+        J -->|Results > 0| L[Check for New Data]
+        
+        L --> M[Fetch Last Date from DB]
+        M --> N[Compare Dates]
+        N --> O{New Data Exists?}
+        
+        O -->|Yes| P[Create Temp Table]
+        P --> Q[Insert New Data to Temp]
+        Q --> R[Join & Insert to Main Table]
+        R --> S[Drop Temp Table]
+        S --> T[Format Email with New Data]
+        
+        O -->|No| U[Prepare 'Up to Date' Email]
+        
+        T --> V[SNS Publish]
+        U --> V
+        K --> V
+    end
+    
+    V --> W[Commit & Close DB Connection]
+    W --> X[End]
+
+    style E fill:#f9f,stroke:#333,stroke-width:2px
