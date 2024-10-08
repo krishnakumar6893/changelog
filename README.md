@@ -43,7 +43,15 @@ jh_url = https://raw.githubusercontent.com/datasets/covid-19/master/data/time-se
         - Create table if table doesn't exist (third try block)
         - Use condition if `query_results == 0`, insert data for the first time (fourth try block)
         - If `query_results != 0`, check for new data and insert it (fifth try block)
-        - Send the inserted rows to email
+            - Fetching the Last Date from the Database Table
+            - Comparing Dates Between the Database and the New Data
+            - Checking if There Are New Rows to Insert
+                - If yes, create a temporary table(hint: use same colums as old table) and insert the new data(hint: use same method to insert data as in the first time)
+                - Now, join the old table and the temporary table and insert the new data into the old table(hint: we can use LEFT JOIN and INSERT INTO old table)
+                - Drop the temporary table
+                - Format and send the inserted rows to email
+        - If no new data, send the email that the data is already up to date
+    * Commit and close the Database connection
 
     * Notify for each below steps
         - Data transformation failed
@@ -63,39 +71,39 @@ graph TD
     A[Start] --> B[Create Postgres RDS Instance]
     B --> C[Create ETL.py]
     C --> D[Extract & Merge CSV Data]
-    
+
     D --> E[Lambda Function]
-    
+
     subgraph "Lambda Main Function"
         E --> F[Call ETL Function]
         F --> G[Connect to PostgreSQL RDS]
         G --> H{Table Exists?}
-        
+
         H -->|No| I[Create Table]
         H -->|Yes| J[Check Query Results]
-        
+
         I --> J
-        
+
         J -->|Results = 0| K[First Time Insert]
         J -->|Results > 0| L[Check for New Data]
-        
+
         L --> M[Fetch Last Date from DB]
         M --> N[Compare Dates]
         N --> O{New Data Exists?}
-        
+
         O -->|Yes| P[Create Temp Table]
         P --> Q[Insert New Data to Temp]
         Q --> R[Join & Insert to Main Table]
         R --> S[Drop Temp Table]
         S --> T[Format Email with New Data]
-        
+
         O -->|No| U[Prepare 'Up to Date' Email]
-        
+
         T --> V[SNS Publish]
         U --> V
         K --> V
     end
-    
+
     V --> W[Commit & Close DB Connection]
     W --> X[End]
 
