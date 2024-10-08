@@ -58,7 +58,7 @@ jh_url = https://raw.githubusercontent.com/datasets/covid-19/master/data/time-se
 
 # ETL Process Flowchart
 
-graph TD
+```mermaid
     A[Start] --> B[Create Postgres RDS Instance]
     B --> C[Create ETL.py]
     C --> D[Extract & Merge CSV Data]
