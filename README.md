@@ -75,6 +75,7 @@ graph TD
     D --> E[Lambda Function]
 
     subgraph "Lambda Main Function"
+
         E --> F[Call ETL Function]
         F --> G[Connect to PostgreSQL RDS]
         G --> H{Table Exists?}
