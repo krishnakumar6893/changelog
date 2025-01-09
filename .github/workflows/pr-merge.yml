@@ -15,8 +15,8 @@ jobs:
           BRANCH=${{ github.event.pull_request.base.ref }}
           MERGE_METHOD=${{ github.event.pull_request.merged_by.login }}
           
-          # Enforce rules for 'develop' and 'master'
-          if [[ "$BRANCH" == "develop" || "$BRANCH" == "master" ]]; then
+          # Enforce rules for 'develop' and 'main'
+          if [[ "$BRANCH" == "develop" || "$BRANCH" == "main" ]]; then
             if [[ "${{ github.event.pull_request.merge_commit_sha }}" == "" ]]; then
               echo "Error: Only merge commits are allowed for $BRANCH."
               exit 1
