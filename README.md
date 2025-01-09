@@ -1,4 +1,4 @@
-Root Challenges - https://www.pluralsight.com/resources/blog/cloud/cloudguruchallenge-python-aws-etl
+Root Challenge - https://www.pluralsight.com/resources/blog/cloud/cloudguruchallenge-python-aws-etl
 
 Lookup blog - https://keertisurapaneni.medium.com/cloudguruchallenge-event-driven-python-on-aws-c1adbdec19ae
 
