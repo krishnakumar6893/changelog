@@ -36,7 +36,7 @@ jobs:
           name: found github actions config
           command: ':'
 workflows:
-  example:
+  pull_request:
     jobs:
       - test
       - build:
