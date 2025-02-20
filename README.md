@@ -11,7 +11,7 @@ jh_url = https://raw.githubusercontent.com/datasets/covid-19/master/data/time-se
 
 - We need to install required dependecies and package them and upload as lambda layer
 
-- For instance, to fix psycopg2 error, we need to install psycopg2-binary and package it as a layer. This can be done in Cloud9 IDE in AWS. Refer https://www.youtube.com/watch?v=80h9lXE07z0 for more details
+- For instance, to fix psycopg2 error, we need to install psycopg2-binary and package it as a layer. This can be done in Cloud9 IDE in AWS. Refer https://www.youtube.com/watch?v=80h9lXE07z0 for more detailss
 
 ```bash
 1. sudo amazon-linux-extras install python3.8
