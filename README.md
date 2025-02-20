@@ -4,7 +4,7 @@ Lookup blog - https://keertisurapaneni.medium.com/cloudguruchallenge-event-drive
 
 ny_url = https://raw.githubusercontent.com/nytimes/covid-19-data/master/us.csv
 
-jh_url = https://raw.githubusercontent.com/datasets/covid-19/master/data/time-series-19-covid-combined.csv
+jh_urls = https://raw.githubusercontent.com/datasets/covid-19/master/data/time-series-19-covid-combined.csv
 
 ## No module found error
 
