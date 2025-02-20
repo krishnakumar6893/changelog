@@ -6,7 +6,7 @@ ny_url = https://raw.githubusercontent.com/nytimes/covid-19-data/master/us.csv
 
 jh_url = https://raw.githubusercontent.com/datasets/covid-19/master/data/time-series-19-covid-combined.csv
 
-## No module found error
+## No modules found error
 
 
 - We need to install required dependecies and package them and upload as lambda layer
