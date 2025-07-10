@@ -17,7 +17,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
-          ignore-branches: "main"
-          ignored-prefixes: "krishnakumar6893"
-          last-commit-age-days: 139
-          dry-run: false
+          last-commit-age-days: 90
+          dry-run: true
