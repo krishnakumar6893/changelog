@@ -19,5 +19,5 @@ jobs:
           repository: ${{ github.repository }}
           ignore-branches: "main,test"
           ignored-prefixes: "krishnakumar6893"
-          last-commit-age-days: 750
+          last-commit-age-days: 720
           dry-run: false
