@@ -2,7 +2,7 @@ Root Challenge - https://www.pluralsight.com/resources/blog/cloud/cloudguruchall
 
 Lookup blog - https://keertisurapaneni.medium.com/cloudguruchallenge-event-driven-python-on-aws-c1adbdec19ae
 
-ny_url = https://raw.githubusercontent.com/nytimes/covid-19-data/master/us.csv
+ny_urls = https://raw.githubusercontent.com/nytimes/covid-19-data/master/us.csv
 
 jh_url = https://raw.githubusercontent.com/datasets/covid-19/master/data/time-series-19-covid-combined.csv
 
