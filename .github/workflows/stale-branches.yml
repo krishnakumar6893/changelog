@@ -14,5 +14,5 @@ jobs:
           repository: ${{ github.repository }}
           ignore-branches: "main,test"
           ignored-prefixes: "feature/,bugfix/"
-          last-commit-age-days: 1750
-          dry-run: true
+          last-commit-age-days: 750
+          dry-run: false
