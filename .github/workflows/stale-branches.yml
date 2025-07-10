@@ -1,0 +1,18 @@
+name: Cleanup Stale Branches
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cleanup-stale-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cleanup Stale Branches
+        uses: cbrgm/cleanup-stale-branches-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          ignore-branches: "main,test"
+          ignored-prefixes: "feature/,bugfix/"
+          last-commit-age-days: 60
+          dry-run: true
