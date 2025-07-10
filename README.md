@@ -1,12 +1,12 @@
-Root Challenge - https://www.pluralsight.com/resources/blog/cloud/cloudguruchallenge-python-aws-etl
+Root Challenges - https://www.pluralsight.com/resources/blog/cloud/cloudguruchallenge-python-aws-etl
 
-Lookup blog - https://keertisurapaneni.medium.com/cloudguruchallenge-event-driven-python-on-aws-c1adbdec19ae
+Lookup blogs - https://keertisurapaneni.medium.com/cloudguruchallenge-event-driven-python-on-aws-c1adbdec19ae
 
 ny_url = https://raw.githubusercontent.com/nytimes/covid-19-data/master/us.csv
 
 jh_url = https://raw.githubusercontent.com/datasets/covid-19/master/data/time-series-19-covid-combined.csv
 
-## No module found error
+## No modules found error
 
 
 - We need to install required dependecies and package them and upload as lambda layer
