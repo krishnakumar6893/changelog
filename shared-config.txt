@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 Beta team version of shared config
+=======
+Main branch version of shared config - this will conflict!
+>>>>>>> origin/main
