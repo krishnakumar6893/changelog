@@ -38,6 +38,13 @@ jobs:
           if git ls-remote --exit-code --heads origin alpha_staging; then
             echo "✅ Alpha staging branch exists"
             
+            # Check if this push came from alpha_staging branch
+            LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")
+            if [[ "$LAST_COMMIT_MESSAGE" == *"alpha_staging"* ]]; then
+              echo "🚫 Skipping alpha sync - this push came from alpha team"
+              exit 0
+            fi
+            
             SYNC_BRANCH="sync/main-to-alpha/$(date +%Y%m%d-%H%M%S)"
             MAIN_SHA=$(git rev-parse --short HEAD)
             
@@ -71,6 +78,13 @@ jobs:
           echo "🔍 Checking if beta_diagnosis branch exists..."
           if git ls-remote --exit-code --heads origin beta_diagnosis; then
             echo "✅ Beta diagnosis branch exists"
+            
+            # Check if this push came from beta_diagnosis branch
+            LAST_COMMIT_MESSAGE=$(git log -1 --pretty=format:"%s")
+            if [[ "$LAST_COMMIT_MESSAGE" == *"beta_diagnosis"* ]]; then
+              echo "🚫 Skipping beta sync - this push came from beta team"
+              exit 0
+            fi
             
             SYNC_BRANCH="sync/main-to-beta/$(date +%Y%m%d-%H%M%S)"
             MAIN_SHA=$(git rev-parse --short HEAD)
