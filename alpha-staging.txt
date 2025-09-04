@@ -1,1 +1,0 @@
-Alpha team's staging environment file
