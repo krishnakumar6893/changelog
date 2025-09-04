@@ -45,33 +45,17 @@ jobs:
             git fetch origin alpha_staging
             git checkout -b "$SYNC_BRANCH" origin/alpha_staging
             
-            echo "Attempting to merge main..."
-            if git merge --no-ff origin/main -m "🔄 Sync main ($MAIN_SHA) into alpha_staging"; then
-              echo "✅ Merge successful"
-              git push -u origin "$SYNC_BRANCH"
-              
-              echo "Creating clean sync PR..."
-              gh pr create \
-                --title "🔄 Sync main → alpha_staging" \
-                --body "Auto-sync after main update. Main commit: $MAIN_SHA. Status: Clean merge. Review and merge when ready." \
-                --base alpha_staging \
-                --head "$SYNC_BRANCH" \
-                --repo ${{ github.repository }}
-            else
-              echo "⚠️ Merge conflicts detected"
-              git add -A
-              git commit -m "🚨 Sync main ($MAIN_SHA) with conflicts"
-              git push -u origin "$SYNC_BRANCH"
-              
-              echo "Creating conflict sync PR as draft..."
-              gh pr create \
-                --title "🚨 Sync main → alpha_staging (CONFLICTS)" \
-                --body "MERGE CONFLICTS DETECTED. Main commit: $MAIN_SHA. Status: Manual resolution required. Action needed: Resolve conflicts and mark ready for review." \
-                --base alpha_staging \
-                --head "$SYNC_BRANCH" \
-                --draft \
-                --repo ${{ github.repository }}
-            fi
+            echo "Merging main into sync branch..."
+            git merge --no-ff origin/main -m "🔄 Sync main ($MAIN_SHA) into alpha_staging"
+            git push -u origin "$SYNC_BRANCH"
+            
+            echo "Creating sync PR..."
+            gh pr create \
+              --title "🔄 Sync main → alpha_staging" \
+              --body "Auto-sync after main update. Main commit: $MAIN_SHA. Review and merge when ready." \
+              --base alpha_staging \
+              --head "$SYNC_BRANCH" \
+              --repo ${{ github.repository }}
           else
             echo "❌ Alpha staging branch doesn't exist, skipping"
           fi
@@ -91,33 +75,17 @@ jobs:
             git fetch origin beta_diagnosis
             git checkout -b "$SYNC_BRANCH" origin/beta_diagnosis
             
-            echo "Attempting to merge main..."
-            if git merge --no-ff origin/main -m "🔄 Sync main ($MAIN_SHA) into beta_diagnosis"; then
-              echo "✅ Merge successful"
-              git push -u origin "$SYNC_BRANCH"
-              
-              echo "Creating clean sync PR..."
-              gh pr create \
-                --title "🔄 Sync main → beta_diagnosis" \
-                --body "Auto-sync after main update. Main commit: $MAIN_SHA. Status: Clean merge. Review and merge when ready." \
-                --base beta_diagnosis \
-                --head "$SYNC_BRANCH" \
-                --repo ${{ github.repository }}
-            else
-              echo "⚠️ Merge conflicts detected"
-              git add -A
-              git commit -m "🚨 Sync main ($MAIN_SHA) with conflicts"
-              git push -u origin "$SYNC_BRANCH"
-              
-              echo "Creating conflict sync PR as draft..."
-              gh pr create \
-                --title "🚨 Sync main → beta_diagnosis (CONFLICTS)" \
-                --body "MERGE CONFLICTS DETECTED. Main commit: $MAIN_SHA. Status: Manual resolution required. Action needed: Resolve conflicts and mark ready for review." \
-                --base beta_diagnosis \
-                --head "$SYNC_BRANCH" \
-                --draft \
-                --repo ${{ github.repository }}
-            fi
+            echo "Merging main into sync branch..."
+            git merge --no-ff origin/main -m "🔄 Sync main ($MAIN_SHA) into beta_diagnosis"
+            git push -u origin "$SYNC_BRANCH"
+            
+            echo "Creating sync PR..."
+            gh pr create \
+              --title "🔄 Sync main → beta_diagnosis" \
+              --body "Auto-sync after main update. Main commit: $MAIN_SHA. Review and merge when ready." \
+              --base beta_diagnosis \
+              --head "$SYNC_BRANCH" \
+              --repo ${{ github.repository }}
           else
             echo "❌ Beta diagnosis branch doesn't exist, skipping"
           fi
