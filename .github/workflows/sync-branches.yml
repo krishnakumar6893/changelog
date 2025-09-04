@@ -46,7 +46,11 @@ jobs:
             git checkout -b "$SYNC_BRANCH" origin/alpha_staging
             
             echo "Merging main into sync branch..."
-            git merge --no-ff origin/main -m "🔄 Sync main ($MAIN_SHA) into alpha_staging"
+            git merge --no-ff origin/main -m "🔄 Sync main ($MAIN_SHA) into alpha_staging" || {
+              echo "⚠️ Merge conflicts detected - committing with conflict markers for manual resolution"
+              git add -A
+              git commit -m "🔄 Sync main ($MAIN_SHA) into alpha_staging (with conflicts)"
+            }
             git push -u origin "$SYNC_BRANCH"
             
             echo "Creating sync PR..."
@@ -76,7 +80,11 @@ jobs:
             git checkout -b "$SYNC_BRANCH" origin/beta_diagnosis
             
             echo "Merging main into sync branch..."
-            git merge --no-ff origin/main -m "🔄 Sync main ($MAIN_SHA) into beta_diagnosis"
+            git merge --no-ff origin/main -m "🔄 Sync main ($MAIN_SHA) into beta_diagnosis" || {
+              echo "⚠️ Merge conflicts detected - committing with conflict markers for manual resolution"
+              git add -A
+              git commit -m "🔄 Sync main ($MAIN_SHA) into beta_diagnosis (with conflicts)"
+            }
             git push -u origin "$SYNC_BRANCH"
             
             echo "Creating sync PR..."
