@@ -1,0 +1,101 @@
+name: Simple Auto Sync PRs
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  create-sync-prs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Debug - Show branches
+        run: |
+          echo "=== Local branches ==="
+          git branch -a
+          echo "=== Remote branches ==="
+          git ls-remote --heads origin
+      
+      - name: Create Alpha Sync PR
+        run: |
+          echo "🔍 Checking if alpha_staging branch exists..."
+          if git ls-remote --exit-code --heads origin alpha_staging; then
+            echo "✅ Alpha staging branch exists"
+            
+            SYNC_BRANCH="sync/main-to-alpha/$(date +%Y%m%d-%H%M%S)"
+            MAIN_SHA=$(git rev-parse --short HEAD)
+            
+            echo "Creating sync branch: $SYNC_BRANCH from alpha_staging"
+            git fetch origin alpha_staging
+            git checkout -b "$SYNC_BRANCH" origin/alpha_staging
+            
+            echo "Merging main into sync branch..."
+            git merge --no-ff origin/main -m "🔄 Sync main ($MAIN_SHA) into alpha_staging" || {
+              echo "⚠️ Merge conflicts detected - committing with conflict markers for manual resolution"
+              git add -A
+              git commit -m "🔄 Sync main ($MAIN_SHA) into alpha_staging (with conflicts)"
+            }
+            git push -u origin "$SYNC_BRANCH"
+            
+            echo "Creating sync PR..."
+            gh pr create \
+              --title "🔄 Sync main → alpha_staging" \
+              --body "Auto-sync after main update. Main commit: $MAIN_SHA. Review and merge when ready." \
+              --base alpha_staging \
+              --head "$SYNC_BRANCH" \
+              --repo ${{ github.repository }}
+          else
+            echo "❌ Alpha staging branch doesn't exist, skipping"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Create Beta Sync PR
+        run: |
+          echo "🔍 Checking if beta_diagnosis branch exists..."
+          if git ls-remote --exit-code --heads origin beta_diagnosis; then
+            echo "✅ Beta diagnosis branch exists"
+            
+            SYNC_BRANCH="sync/main-to-beta/$(date +%Y%m%d-%H%M%S)"
+            MAIN_SHA=$(git rev-parse --short HEAD)
+            
+            echo "Creating sync branch: $SYNC_BRANCH from beta_diagnosis"
+            git fetch origin beta_diagnosis
+            git checkout -b "$SYNC_BRANCH" origin/beta_diagnosis
+            
+            echo "Merging main into sync branch..."
+            git merge --no-ff origin/main -m "🔄 Sync main ($MAIN_SHA) into beta_diagnosis" || {
+              echo "⚠️ Merge conflicts detected - committing with conflict markers for manual resolution"
+              git add -A
+              git commit -m "🔄 Sync main ($MAIN_SHA) into beta_diagnosis (with conflicts)"
+            }
+            git push -u origin "$SYNC_BRANCH"
+            
+            echo "Creating sync PR..."
+            gh pr create \
+              --title "🔄 Sync main → beta_diagnosis" \
+              --body "Auto-sync after main update. Main commit: $MAIN_SHA. Review and merge when ready." \
+              --base beta_diagnosis \
+              --head "$SYNC_BRANCH" \
+              --repo ${{ github.repository }}
+          else
+            echo "❌ Beta diagnosis branch doesn't exist, skipping"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
