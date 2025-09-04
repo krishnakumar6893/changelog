@@ -1,0 +1,226 @@
+name: Auto Sync PRs
+
+on:
+  push:
+    branches: [main]  # Changed from 'master' to 'main' for your repo
+  workflow_dispatch:     # Manual trigger option
+
+jobs:
+  create-sync-prs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Create Alpha Sync PR
+        run: |
+          # Create unique sync branch
+          SYNC_BRANCH="sync/main-to-alpha/$(date +%Y%m%d-%H%M%S)"
+          MAIN_SHA=$(git rev-parse --short HEAD)
+          
+          echo "Creating sync branch: $SYNC_BRANCH"
+          
+          # Create sync branch from alpha_staging and merge main
+          if git checkout -b "$SYNC_BRANCH" origin/alpha_staging 2>/dev/null; then
+            echo "✅ Alpha staging branch exists, proceeding with sync"
+            
+            # Attempt merge with conflict handling
+            if git merge --no-ff origin/main -m "🔄 Sync main ($MAIN_SHA) into alpha_staging"; then
+              echo "✅ Merge successful for Alpha"
+              MERGE_STATUS="success"
+              PR_TITLE="🔄 Sync main → alpha_staging"
+              PR_BODY="**Auto-sync after main update**
+
+📍 **Main commit:** \`$MAIN_SHA\`
+🎯 **Target:** \`alpha_staging\`
+✅ **Status:** Clean merge
+
+**Changes included:**
+\`\`\`
+$(git log --oneline alpha_staging..HEAD | head -5)
+\`\`\`
+
+**Review and merge when ready** ✅"
+            else
+              echo "⚠️ Merge conflicts detected for Alpha"
+              MERGE_STATUS="conflicts"
+              
+              # Get conflict files
+              CONFLICT_FILES=$(git diff --name-only --diff-filter=U)
+              
+              # Stage conflicted files (with conflict markers)
+              git add -A
+              git commit -m "🚨 Sync main ($MAIN_SHA) with conflicts - manual resolution needed"
+              
+              PR_TITLE="🚨 Sync main → alpha_staging (CONFLICTS)"
+              PR_BODY="**⚠️ MERGE CONFLICTS DETECTED**
+
+📍 **Main commit:** \`$MAIN_SHA\`
+🎯 **Target:** \`alpha_staging\`
+🚨 **Status:** Manual resolution required
+
+**Conflicting files:**
+\`\`\`
+$CONFLICT_FILES
+\`\`\`
+
+**How to resolve:**
+1. Checkout this branch: \`git checkout $SYNC_BRANCH\`
+2. Resolve conflicts in the files above
+3. Remove conflict markers (\`<<<<<<<\`, \`=======\`, \`>>>>>>>\`)
+4. Stage resolved files: \`git add <filename>\`
+5. Commit: \`git commit -m \"Resolve merge conflicts\"\`
+6. Push: \`git push\`
+7. Mark this PR as ready for review
+
+**Conflict markers look like:**
+\`\`\`
+<<<<<<< HEAD
+alpha_staging content
+=======
+main content
+>>>>>>> main
+\`\`\`
+
+**Need help?** Ask in #dev-team or ping the reviewer 🔧"
+            fi
+            
+            # Push sync branch
+            git push -u origin "$SYNC_BRANCH"
+            
+            # Create PR with appropriate settings
+            if [ "$MERGE_STATUS" = "conflicts" ]; then
+              gh pr create \
+                --title "$PR_TITLE" \
+                --body "$PR_BODY" \
+                --base alpha_staging \
+                --head "$SYNC_BRANCH" \
+                --label "sync,conflicts" \
+                --draft
+            else
+              gh pr create \
+                --title "$PR_TITLE" \
+                --body "$PR_BODY" \
+                --base alpha_staging \
+                --head "$SYNC_BRANCH" \
+                --label "sync"
+            fi
+          else
+            echo "❌ Alpha staging branch doesn't exist, skipping"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Create Beta Sync PR
+        run: |
+          # Create unique sync branch
+          SYNC_BRANCH="sync/main-to-beta/$(date +%Y%m%d-%H%M%S)"
+          MAIN_SHA=$(git rev-parse --short HEAD)
+          
+          echo "Creating sync branch: $SYNC_BRANCH"
+          
+          # Create sync branch from beta_diagnosis and merge main
+          if git checkout -b "$SYNC_BRANCH" origin/beta_diagnosis 2>/dev/null; then
+            echo "✅ Beta diagnosis branch exists, proceeding with sync"
+            
+            # Attempt merge with conflict handling
+            if git merge --no-ff origin/main -m "🔄 Sync main ($MAIN_SHA) into beta_diagnosis"; then
+              echo "✅ Merge successful for Beta"
+              MERGE_STATUS="success"
+              PR_TITLE="🔄 Sync main → beta_diagnosis"
+              PR_BODY="**Auto-sync after main update**
+
+📍 **Main commit:** \`$MAIN_SHA\`
+🎯 **Target:** \`beta_diagnosis\`
+✅ **Status:** Clean merge
+
+**Changes included:**
+\`\`\`
+$(git log --oneline beta_diagnosis..HEAD | head -5)
+\`\`\`
+
+**Review and merge when ready** ✅"
+            else
+              echo "⚠️ Merge conflicts detected for Beta"
+              MERGE_STATUS="conflicts"
+              
+              # Get conflict files
+              CONFLICT_FILES=$(git diff --name-only --diff-filter=U)
+              
+              # Stage conflicted files (with conflict markers)
+              git add -A
+              git commit -m "🚨 Sync main ($MAIN_SHA) with conflicts - manual resolution needed"
+              
+              PR_TITLE="🚨 Sync main → beta_diagnosis (CONFLICTS)"
+              PR_BODY="**⚠️ MERGE CONFLICTS DETECTED**
+
+📍 **Main commit:** \`$MAIN_SHA\`
+🎯 **Target:** \`beta_diagnosis\`
+🚨 **Status:** Manual resolution required
+
+**Conflicting files:**
+\`\`\`
+$CONFLICT_FILES
+\`\`\`
+
+**How to resolve:**
+1. Checkout this branch: \`git checkout $SYNC_BRANCH\`
+2. Resolve conflicts in the files above
+3. Remove conflict markers (\`<<<<<<<\`, \`=======\`, \`>>>>>>>\`)
+4. Stage resolved files: \`git add <filename>\`
+5. Commit: \`git commit -m \"Resolve merge conflicts\"\`
+6. Push: \`git push\`
+7. Mark this PR as ready for review
+
+**Conflict markers look like:**
+\`\`\`
+<<<<<<< HEAD
+beta_diagnosis content
+=======
+main content
+>>>>>>> main
+\`\`\`
+
+**Need help?** Ask in #dev-team or ping the reviewer 🔧"
+            fi
+            
+            # Push sync branch
+            git push -u origin "$SYNC_BRANCH"
+            
+            # Create PR with appropriate settings
+            if [ "$MERGE_STATUS" = "conflicts" ]; then
+              gh pr create \
+                --title "$PR_TITLE" \
+                --body "$PR_BODY" \
+                --base beta_diagnosis \
+                --head "$SYNC_BRANCH" \
+                --label "sync,conflicts" \
+                --draft
+            else
+              gh pr create \
+                --title "$PR_TITLE" \
+                --body "$PR_BODY" \
+                --base beta_diagnosis \
+                --head "$SYNC_BRANCH" \
+                --label "sync"
+            fi
+          else
+            echo "❌ Beta diagnosis branch doesn't exist, skipping"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Cleanup on failure
+        if: failure()
+        run: |
+          echo "🧹 Cleaning up any leftover branches..."
+          git branch -D sync/main-to-alpha/* 2>/dev/null || true
+          git branch -D sync/main-to-beta/* 2>/dev/null || true
