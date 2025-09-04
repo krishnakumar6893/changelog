@@ -50,17 +50,10 @@ jobs:
               echo "✅ Merge successful"
               git push -u origin "$SYNC_BRANCH"
               
-              # Create PR using GitHub CLI (should work now with permissions)
               echo "Creating clean sync PR..."
               gh pr create \
                 --title "🔄 Sync main → alpha_staging" \
-                --body "**Auto-sync after main update**
-
-📍 **Main commit:** \`$MAIN_SHA\`
-🎯 **Target:** \`alpha_staging\`
-✅ **Status:** Clean merge
-
-**Review and merge when ready** ✅" \
+                --body "Auto-sync after main update. Main commit: $MAIN_SHA. Status: Clean merge. Review and merge when ready." \
                 --base alpha_staging \
                 --head "$SYNC_BRANCH" \
                 --repo ${{ github.repository }}
@@ -70,17 +63,10 @@ jobs:
               git commit -m "🚨 Sync main ($MAIN_SHA) with conflicts"
               git push -u origin "$SYNC_BRANCH"
               
-              # Create draft PR for conflicts
               echo "Creating conflict sync PR as draft..."
               gh pr create \
                 --title "🚨 Sync main → alpha_staging (CONFLICTS)" \
-                --body "**⚠️ MERGE CONFLICTS DETECTED**
-
-📍 **Main commit:** \`$MAIN_SHA\`
-🎯 **Target:** \`alpha_staging\`
-🚨 **Status:** Manual resolution required
-
-**Action needed:** Resolve conflicts and mark ready for review" \
+                --body "MERGE CONFLICTS DETECTED. Main commit: $MAIN_SHA. Status: Manual resolution required. Action needed: Resolve conflicts and mark ready for review." \
                 --base alpha_staging \
                 --head "$SYNC_BRANCH" \
                 --draft \
@@ -110,17 +96,10 @@ jobs:
               echo "✅ Merge successful"
               git push -u origin "$SYNC_BRANCH"
               
-              # Create PR using GitHub CLI
               echo "Creating clean sync PR..."
               gh pr create \
                 --title "🔄 Sync main → beta_diagnosis" \
-                --body "**Auto-sync after main update**
-
-📍 **Main commit:** \`$MAIN_SHA\`
-🎯 **Target:** \`beta_diagnosis\`
-✅ **Status:** Clean merge
-
-**Review and merge when ready** ✅" \
+                --body "Auto-sync after main update. Main commit: $MAIN_SHA. Status: Clean merge. Review and merge when ready." \
                 --base beta_diagnosis \
                 --head "$SYNC_BRANCH" \
                 --repo ${{ github.repository }}
@@ -130,17 +109,10 @@ jobs:
               git commit -m "🚨 Sync main ($MAIN_SHA) with conflicts"
               git push -u origin "$SYNC_BRANCH"
               
-              # Create draft PR for conflicts
               echo "Creating conflict sync PR as draft..."
               gh pr create \
                 --title "🚨 Sync main → beta_diagnosis (CONFLICTS)" \
-                --body "**⚠️ MERGE CONFLICTS DETECTED**
-
-📍 **Main commit:** \`$MAIN_SHA\`
-🎯 **Target:** \`beta_diagnosis\`
-🚨 **Status:** Manual resolution required
-
-**Action needed:** Resolve conflicts and mark ready for review" \
+                --body "MERGE CONFLICTS DETECTED. Main commit: $MAIN_SHA. Status: Manual resolution required. Action needed: Resolve conflicts and mark ready for review." \
                 --base beta_diagnosis \
                 --head "$SYNC_BRANCH" \
                 --draft \
