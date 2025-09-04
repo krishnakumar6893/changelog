@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 Beta team version of shared config
+=======
+Shared config - combined version with all team inputs
+>>>>>>> origin/main
