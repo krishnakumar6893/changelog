@@ -50,17 +50,20 @@ jobs:
               echo "✅ Merge successful"
               git push -u origin "$SYNC_BRANCH"
               
-              # Create PR using GitHub API instead of gh CLI
-              curl -X POST \
-                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                -H "Accept: application/vnd.github.v3+json" \
-                https://api.github.com/repos/${{ github.repository }}/pulls \
-                -d '{
-                  "title": "🔄 Sync main → alpha_staging",
-                  "body": "**Auto-sync after main update**\n\n📍 **Main commit:** `'$MAIN_SHA'`\n🎯 **Target:** `alpha_staging`\n✅ **Status:** Clean merge\n\n**Review and merge when ready** ✅",
-                  "head": "'$SYNC_BRANCH'",
-                  "base": "alpha_staging"
-                }'
+              # Create PR using GitHub CLI (should work now with permissions)
+              echo "Creating clean sync PR..."
+              gh pr create \
+                --title "🔄 Sync main → alpha_staging" \
+                --body "**Auto-sync after main update**
+
+📍 **Main commit:** \`$MAIN_SHA\`
+🎯 **Target:** \`alpha_staging\`
+✅ **Status:** Clean merge
+
+**Review and merge when ready** ✅" \
+                --base alpha_staging \
+                --head "$SYNC_BRANCH" \
+                --repo ${{ github.repository }}
             else
               echo "⚠️ Merge conflicts detected"
               git add -A
@@ -68,17 +71,20 @@ jobs:
               git push -u origin "$SYNC_BRANCH"
               
               # Create draft PR for conflicts
-              curl -X POST \
-                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                -H "Accept: application/vnd.github.v3+json" \
-                https://api.github.com/repos/${{ github.repository }}/pulls \
-                -d '{
-                  "title": "🚨 Sync main → alpha_staging (CONFLICTS)",
-                  "body": "**⚠️ MERGE CONFLICTS DETECTED**\n\n📍 **Main commit:** `'$MAIN_SHA'`\n🎯 **Target:** `alpha_staging`\n🚨 **Status:** Manual resolution required\n\n**Action needed:** Resolve conflicts and mark ready for review",
-                  "head": "'$SYNC_BRANCH'",
-                  "base": "alpha_staging",
-                  "draft": true
-                }'
+              echo "Creating conflict sync PR as draft..."
+              gh pr create \
+                --title "🚨 Sync main → alpha_staging (CONFLICTS)" \
+                --body "**⚠️ MERGE CONFLICTS DETECTED**
+
+📍 **Main commit:** \`$MAIN_SHA\`
+🎯 **Target:** \`alpha_staging\`
+🚨 **Status:** Manual resolution required
+
+**Action needed:** Resolve conflicts and mark ready for review" \
+                --base alpha_staging \
+                --head "$SYNC_BRANCH" \
+                --draft \
+                --repo ${{ github.repository }}
             fi
           else
             echo "❌ Alpha staging branch doesn't exist, skipping"
@@ -104,17 +110,20 @@ jobs:
               echo "✅ Merge successful"
               git push -u origin "$SYNC_BRANCH"
               
-              # Create PR using GitHub API
-              curl -X POST \
-                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                -H "Accept: application/vnd.github.v3+json" \
-                https://api.github.com/repos/${{ github.repository }}/pulls \
-                -d '{
-                  "title": "🔄 Sync main → beta_diagnosis",
-                  "body": "**Auto-sync after main update**\n\n📍 **Main commit:** `'$MAIN_SHA'`\n🎯 **Target:** `beta_diagnosis`\n✅ **Status:** Clean merge\n\n**Review and merge when ready** ✅",
-                  "head": "'$SYNC_BRANCH'",
-                  "base": "beta_diagnosis"
-                }'
+              # Create PR using GitHub CLI
+              echo "Creating clean sync PR..."
+              gh pr create \
+                --title "🔄 Sync main → beta_diagnosis" \
+                --body "**Auto-sync after main update**
+
+📍 **Main commit:** \`$MAIN_SHA\`
+🎯 **Target:** \`beta_diagnosis\`
+✅ **Status:** Clean merge
+
+**Review and merge when ready** ✅" \
+                --base beta_diagnosis \
+                --head "$SYNC_BRANCH" \
+                --repo ${{ github.repository }}
             else
               echo "⚠️ Merge conflicts detected"
               git add -A
@@ -122,17 +131,20 @@ jobs:
               git push -u origin "$SYNC_BRANCH"
               
               # Create draft PR for conflicts
-              curl -X POST \
-                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                -H "Accept: application/vnd.github.v3+json" \
-                https://api.github.com/repos/${{ github.repository }}/pulls \
-                -d '{
-                  "title": "🚨 Sync main → beta_diagnosis (CONFLICTS)",
-                  "body": "**⚠️ MERGE CONFLICTS DETECTED**\n\n📍 **Main commit:** `'$MAIN_SHA'`\n🎯 **Target:** `beta_diagnosis`\n🚨 **Status:** Manual resolution required\n\n**Action needed:** Resolve conflicts and mark ready for review",
-                  "head": "'$SYNC_BRANCH'",
-                  "base": "beta_diagnosis",
-                  "draft": true
-                }'
+              echo "Creating conflict sync PR as draft..."
+              gh pr create \
+                --title "🚨 Sync main → beta_diagnosis (CONFLICTS)" \
+                --body "**⚠️ MERGE CONFLICTS DETECTED**
+
+📍 **Main commit:** \`$MAIN_SHA\`
+🎯 **Target:** \`beta_diagnosis\`
+🚨 **Status:** Manual resolution required
+
+**Action needed:** Resolve conflicts and mark ready for review" \
+                --base beta_diagnosis \
+                --head "$SYNC_BRANCH" \
+                --draft \
+                --repo ${{ github.repository }}
             fi
           else
             echo "❌ Beta diagnosis branch doesn't exist, skipping"
